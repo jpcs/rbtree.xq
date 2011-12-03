@@ -66,7 +66,7 @@ declare function put(
 declare function get($map as function() as item()*, $key as item())
   as item()*
 {
-  value(rbtree:get(lt#2, $map, entry($key, ())))
+  rbtree:get(lt#2, $map, entry($key, ())) ! value(.)
 };
 
 declare function contains($map as function() as item()*, $key as item())
