@@ -87,3 +87,13 @@ declare function fold(
     },
     $z, $map)
 };
+
+declare function count($map as item()) as xs:integer
+{
+  rbtree:fold(function($result, $pair) { $result + 1 },0, $map)
+};
+
+declare function empty($map as function() as item()*) as xs:boolean
+{
+  rbtree:empty($map)
+};
