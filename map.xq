@@ -75,6 +75,12 @@ declare function contains($map as function() as item()*, $key as item())
   rbtree:contains(lt#2, $map, entry($key, ()))
 };
 
+declare function delete($map as function() as item()*, $key as item())
+  as function() as item()*
+{
+  rbtree:delete(lt#2, $map, entry($key, ()))
+};
+
 declare function fold(
   $f as function(item()*, item(), item()*) as item()*,
   $z as item()*,

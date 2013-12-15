@@ -398,8 +398,8 @@ declare %public function check-invariants($lt, $tree, $min, $max, $msg) {
 declare %public function to-xml($tree) {
   if(empty($tree)) then element L { }
   else element { if(isred($tree)) then 'R' else 'B' } {
-    rbtree:to-xml(left($tree)),
+    to-xml(left($tree)),
     element V { value($tree) },
-    rbtree:to-xml(right($tree))
+    to-xml(right($tree))
   }
 };
