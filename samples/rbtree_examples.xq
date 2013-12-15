@@ -21,21 +21,33 @@ import module namespace rbtree = "http://snelson.org.uk/functions/rbtree" at "..
 let $lt := function($a, $b) { $a < $b }
 let $contains := rbtree:contains($lt, ?, ?)
 let $find_gte := rbtree:find_gte($lt, ?, ?)
-let $tree := fold-left(rbtree:insert($lt, ?, ?), rbtree:create(), 
-  ("aardvark",
-  "zebra",
-  "elephant",
-  "eagle",
-  "osterich",
-  "terrapin",
-  "antelope"))
+let $tree := fold-left(
+  (
+    "aardvark",
+    "zebra",
+    "elephant",
+    "eagle",
+    "osterich",
+    "terrapin",
+    "antelope"
+  ),
+  rbtree:create(),
+  rbtree:insert($lt, ?, ?))
+let $tree2 := rbtree:delete($lt, $tree, "osterich")
 return (
   $contains($tree, "terrapin"),
   $contains($tree, "aardvark"),
   $contains($tree, "antelope"),
-  $contains($tree, "newt"),
 
+  $contains($tree, "newt"),
   $find_gte($tree, "newt"),
 
-  rbtree:fold(function($a, $m) { $a, $m }, (), $tree)
+  $contains($tree, "osterich"),
+  $contains($tree2, "osterich"),
+
+  "tree:",
+  rbtree:fold(function($a, $m) { $a, $m }, (), $tree),
+
+  "tree2:",
+  rbtree:fold(function($a, $m) { $a, $m }, (), $tree2)
 )

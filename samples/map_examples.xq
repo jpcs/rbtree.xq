@@ -18,23 +18,38 @@ xquery version "3.0";
 
 import module namespace map = "http://snelson.org.uk/functions/map" at "../map.xq";
 
-let $rbmap := fold-left(map:put#2, map:create(), (
-  map:entry("a", "aardvark"),
-  map:entry("z", "zebra"),
-  map:entry("e", ("elephant", "eagle")),
-  map:entry("o", "osterich"),
-  map:entry("t", "terrapin"),
-  map:entry("a", "antelope")
-))
+let $rbmap := fold-left(
+  (
+    map:entry("a", "aardvark"),
+    map:entry("z", "zebra"),
+    map:entry("e", ("elephant", "eagle")),
+    map:entry("o", "osterich"),
+    map:entry("t", "terrapin"),
+    map:entry("a", "antelope")
+  ),
+  map:create(),
+  map:put#2
+)
 let $map := map:get($rbmap, ?)
+let $rbmap2 := map:delete($rbmap, "o")
 return (
   $map("a"),
   $map("e"),
+  map:contains($rbmap, "o"),
+  map:contains($rbmap2, "o"),
   map:contains($rbmap, "k"),
 
+  "rbmap:",
   map:fold(
     function($a, $k, $v) {
       $a, concat("key: ", $k, ", value: (",
         string-join($v, ", "), ")")
-    }, (), $rbmap)
+    }, (), $rbmap),
+
+  "rbmap2:",
+  map:fold(
+    function($a, $k, $v) {
+      $a, concat("key: ", $k, ", value: (",
+        string-join($v, ", "), ")")
+    }, (), $rbmap2)
 )
