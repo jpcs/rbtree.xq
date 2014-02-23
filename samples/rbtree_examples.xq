@@ -1,7 +1,7 @@
 xquery version "3.0";
 
 (:
- : Copyright (c) 2010-2011 John Snelson
+ : Copyright (c) 2010-2014 John Snelson
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -17,11 +17,12 @@ xquery version "3.0";
  :)
 
 import module namespace rbtree = "http://snelson.org.uk/functions/rbtree" at "../rbtree.xq";
+import module namespace compat = "http://snelson.org.uk/functions/xq30-compat" at "compat.xq";
 
 let $lt := function($a, $b) { $a < $b }
 let $contains := rbtree:contains($lt, ?, ?)
 let $find_gte := rbtree:find_gte($lt, ?, ?)
-let $tree := fold-left(
+let $tree := compat:fold-left(
   (
     "aardvark",
     "zebra",

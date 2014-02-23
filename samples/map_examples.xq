@@ -1,7 +1,7 @@
 xquery version "3.0";
 
 (:
- : Copyright (c) 2010-2011 John Snelson
+ : Copyright (c) 2010-2014 John Snelson
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@ xquery version "3.0";
  :)
 
 import module namespace map = "http://snelson.org.uk/functions/map" at "../map.xq";
+import module namespace compat = "http://snelson.org.uk/functions/xq30-compat" at "compat.xq";
 
-let $rbmap := fold-left(
+let $rbmap := compat:fold-left(
   (
     map:entry("a", "aardvark"),
     map:entry("z", "zebra"),
