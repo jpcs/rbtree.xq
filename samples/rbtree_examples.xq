@@ -1,7 +1,7 @@
 xquery version "3.0";
 
 (:
- : Copyright (c) 2010-2011 John Snelson
+ : Copyright (c) 2010-2014 John Snelson
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -17,25 +17,38 @@ xquery version "3.0";
  :)
 
 import module namespace rbtree = "http://snelson.org.uk/functions/rbtree" at "../rbtree.xq";
+import module namespace compat = "http://snelson.org.uk/functions/xq30-compat" at "compat.xq";
 
 let $lt := function($a, $b) { $a < $b }
 let $contains := rbtree:contains($lt, ?, ?)
 let $find_gte := rbtree:find_gte($lt, ?, ?)
-let $tree := fold-left(rbtree:insert($lt, ?, ?), rbtree:create(), 
-  ("aardvark",
-  "zebra",
-  "elephant",
-  "eagle",
-  "osterich",
-  "terrapin",
-  "antelope"))
+let $tree := compat:fold-left(
+  (
+    "aardvark",
+    "zebra",
+    "elephant",
+    "eagle",
+    "osterich",
+    "terrapin",
+    "antelope"
+  ),
+  rbtree:create(),
+  rbtree:insert($lt, ?, ?))
+let $tree2 := rbtree:delete($lt, $tree, "osterich")
 return (
   $contains($tree, "terrapin"),
   $contains($tree, "aardvark"),
   $contains($tree, "antelope"),
-  $contains($tree, "newt"),
 
+  $contains($tree, "newt"),
   $find_gte($tree, "newt"),
 
-  rbtree:fold(function($a, $m) { $a, $m }, (), $tree)
+  $contains($tree, "osterich"),
+  $contains($tree2, "osterich"),
+
+  "tree:",
+  rbtree:fold(function($a, $m) { $a, $m }, (), $tree),
+
+  "tree2:",
+  rbtree:fold(function($a, $m) { $a, $m }, (), $tree2)
 )
